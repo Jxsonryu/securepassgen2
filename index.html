@@ -8,46 +8,47 @@
     <style>
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
+            background: #f8f9fa;
+            color: #212529;
             margin: 0;
             padding: 20px;
-            min-height: 100vh;
         }
         .container {
-            max-width: 720px;
+            max-width: 700px;
             margin: auto;
-            background: #161616;
+            background: white;
             padding: 40px 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+            text-align: center;
+            margin-bottom: 20px;
         }
         h1 {
             margin: 0;
-            font-size: 2.7rem;
+            font-size: 2.4rem;
+            color: #0066ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
-        .toggle {
-            font-size: 34px;
-            background: none;
-            border: none;
-            cursor: pointer;
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
         }
         .password {
-            font-size: 28px;
-            padding: 25px;
-            background: #111;
-            border: 2px solid #333;
+            font-size: 26px;
+            padding: 20px;
+            background: #f1f3f5;
             border-radius: 12px;
             text-align: center;
             margin: 25px 0;
             word-break: break-all;
             font-family: monospace;
+            border: 2px solid #e9ecef;
         }
         button {
             width: 100%;
@@ -59,7 +60,7 @@
             cursor: pointer;
             font-weight: 600;
         }
-        .generate { background: #ff6b00; color: white; }
+        .generate { background: #0066ff; color: white; }
         .copy { background: #28a745; color: white; }
         .passphrase { background: #6f42c1; color: white; }
     </style>
@@ -68,18 +69,17 @@
     <div class="container">
         <div class="header">
             <h1>🔐 SecurePassGen</h1>
-            <button class="toggle" onclick="toggleMode()">🌙</button>
         </div>
-        <p style="text-align:center; color:#aaa;">Free • Secure • Private • Works Offline</p>
+        <p class="subtitle">Free • Secure • No Signup • Works Offline</p>
         
         <div class="password" id="password">Click Generate</div>
 
         <button class="generate" onclick="generatePassword()">Generate Strong Password</button>
         <button class="copy" onclick="copyPassword()">Copy to Clipboard</button>
 
-        <p><strong>Length:</strong> <input type="range" id="length" min="8" max="32" value="16" oninput="generatePassword()" style="width:100%"> <span id="len">16</span></p>
+        <p style="margin:20px 0 10px;"><strong>Length:</strong> <input type="range" id="length" min="8" max="32" value="16" oninput="generatePassword()" style="width:80%"> <span id="len">16</span></p>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin:20px 0;">
             <label><input type="checkbox" id="upper" checked onchange="generatePassword()"> Uppercase</label>
             <label><input type="checkbox" id="lower" checked onchange="generatePassword()"> Lowercase</label>
             <label><input type="checkbox" id="numbers" checked onchange="generatePassword()"> Numbers</label>
@@ -87,35 +87,29 @@
         </div>
 
         <button class="passphrase" onclick="generatePassphrase()">Generate Secure Passphrase</button>
-        <div class="password" id="passphrase" style="font-size:20px;"></div>
 
-        <h2 style="margin-top:50px;">FAQ</h2>
+        <div style="margin-top:50px;">
+            <h2>Why Strong Passwords Matter</h2>
+            <p>Weak passwords are the easiest way for hackers to break into accounts. Our tool creates truly random, long passwords that are very hard to crack.</p>
+        </div>
+
+        <div style="margin-top:30px;">
+            <h2>How It Works</h2>
+            <p>Everything runs in your browser. Nothing is saved or sent to any server — 100% private.</p>
+        </div>
+
+        <h2 style="margin-top:40px;">FAQ</h2>
         <details><summary>Are these passwords really secure?</summary><p>Yes — long + truly random = extremely hard to crack.</p></details>
         <details><summary>Is this tool free forever?</summary><p>Yes, 100% free with no ads.</p></details>
         <details><summary>Do you store any passwords?</summary><p>No. Everything is generated in your browser only.</p></details>
-
-        <h2 style="margin-top:40px;">Privacy Policy</h2>
-        <details>
-            <summary>Read Full Privacy Policy</summary>
-            <p>• We do not collect or store any personal data<br>
-               • All passwords are generated locally in your browser<br>
-               • Nothing is sent to any server<br>
-               • We respect your privacy 100%</p>
-        </details>
     </div>
 
     <script>
-        function toggleMode() {
-            document.body.classList.toggle('light');
-            const btn = document.querySelector('.toggle');
-            btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
-        }
-
         function generatePassword() {
             const len = parseInt(document.getElementById('length').value);
             document.getElementById('len').textContent = len;
 
-            let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
             let pass = '';
             for (let i = 0; i < len; i++) {
                 pass += chars[Math.floor(Math.random() * chars.length)];
@@ -137,7 +131,7 @@
                 phrase += words[Math.floor(Math.random()*words.length)];
                 if (i < 3) phrase += '-';
             }
-            document.getElementById('passphrase').innerText = phrase;
+            document.getElementById('password').innerText = phrase;
         }
 
         window.onload = generatePassword;
