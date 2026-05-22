@@ -36,6 +36,7 @@
             padding: 40px 35px;
             border-radius: 24px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid #333;
             position: relative;
         }
         .header {
@@ -45,15 +46,21 @@
             gap: 15px;
             position: relative;
         }
-        h1 { font-size: 2.8rem; margin: 0; }
+        h1 {
+            font-size: 2.8rem;
+            margin: 0;
+        }
         .toggle {
-            position: absolute;
-            right: 10px;
             font-size: 28px;
             background: none;
             border: none;
             cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 5px;
         }
+
+        .subtitle { text-align: center; color: #aaa; margin-bottom: 30px; font-size: 1.1rem; }
 
         .password {
             font-size: 29px;
@@ -93,8 +100,8 @@
         .passphrase { background: #ffd000; color: #111; font-weight: bold; }
 
         details {
-            margin: 12px 0;
-            padding: 14px;
+            margin: 15px 0;
+            padding: 12px;
             background: #1f1f1f;
             border-radius: 12px;
             border: 1px solid #333;
@@ -108,7 +115,7 @@
             <h1>🔐 SecurePassGen</h1>
             <button class="toggle" onclick="toggleMode()">🌙</button>
         </div>
-        <p style="text-align:center; color:#aaa;">Free • Secure • Private • Works Offline</p>
+        <p class="subtitle">Free • Secure • Private • Works Offline</p>
         
         <div class="password" id="password">Click Generate</div>
 
@@ -132,27 +139,18 @@
         <button class="passphrase" onclick="generatePassphrase()">Generate Secure Passphrase</button>
         <div class="password" id="passphrase" style="font-size:21px;"></div>
 
-        <!-- FAQ & Privacy -->
         <h2 style="margin-top:50px;">FAQ</h2>
         <details><summary>Are these passwords really secure?</summary><p>Yes — long + truly random = extremely hard to crack.</p></details>
         <details><summary>Is this tool free forever?</summary><p>Yes, 100% free with no ads.</p></details>
-        <details><summary>Do you store any passwords?</summary><p>No. Everything is generated in your browser only.</p></details>
-
-        <h2 style="margin-top:40px;">Privacy Policy</h2>
-        <details>
-            <summary>Read Full Privacy Policy</summary>
-            <p>• We do not collect or store any data<br>
-               • All passwords are generated locally in your browser<br>
-               • Nothing is sent to any server<br>
-               • We respect your privacy 100%</p>
-        </details>
+        <details><summary>Do you store any passwords?</summary><p>No. Everything stays in your browser.</p></details>
+        <details><summary>Can I use it on mobile?</summary><p>Yes, fully responsive.</p></details>
     </div>
 
     <script>
         function toggleMode() {
             document.body.classList.toggle('light');
-            const btn = document.querySelector('.toggle');
-            btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+            const toggleBtn = document.querySelector('.toggle');
+            toggleBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
         }
 
         function updateStrength(password) {
@@ -168,10 +166,23 @@
             document.getElementById('strengthBar').style.width = percentage + '%';
 
             const text = document.getElementById('strengthText');
-            if (score >= 5) { text.textContent = 'VERY STRONG'; text.style.color = '#34c759'; document.getElementById('strengthBar').style.background = '#34c759'; }
-            else if (score >= 4) { text.textContent = 'STRONG'; text.style.color = '#ffcc00'; document.getElementById('strengthBar').style.background = '#ffcc00'; }
-            else if (score >= 3) { text.textContent = 'MEDIUM'; text.style.color = '#ff9500'; document.getElementById('strengthBar').style.background = '#ff9500'; }
-            else { text.textContent = 'WEAK'; text.style.color = '#ff3b30'; document.getElementById('strengthBar').style.background = '#ff3b30'; }
+            if (score >= 5) {
+                text.textContent = 'VERY STRONG';
+                text.style.color = '#34c759';
+                document.getElementById('strengthBar').style.background = '#34c759';
+            } else if (score >= 4) {
+                text.textContent = 'STRONG';
+                text.style.color = '#ffcc00';
+                document.getElementById('strengthBar').style.background = '#ffcc00';
+            } else if (score >= 3) {
+                text.textContent = 'MEDIUM';
+                text.style.color = '#ff9500';
+                document.getElementById('strengthBar').style.background = '#ff9500';
+            } else {
+                text.textContent = 'WEAK';
+                text.style.color = '#ff3b30';
+                document.getElementById('strengthBar').style.background = '#ff3b30';
+            }
         }
 
         function generatePassword() {
@@ -181,21 +192,28 @@
             if (document.getElementById('upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             if (document.getElementById('numbers').checked) chars += '0123456789';
             if (document.getElementById('symbols').checked) chars += '!@#$%^&*()_+';
+            
             let pass = '';
-            for (let i = 0; i < len; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+            for (let i = 0; i < len; i++) {
+                pass += chars[Math.floor(Math.random() * chars.length)];
+            }
             document.getElementById('password').innerText = pass;
             updateStrength(pass);
         }
 
         function copyPassword() {
             const pass = document.getElementById('password').innerText;
-            if (pass !== 'Click Generate') navigator.clipboard.writeText(pass).then(() => alert('✅ Copied!'));
+            if (pass !== 'Click Generate') {
+                navigator.clipboard.writeText(pass).then(() => alert('✅ Copied!'));
+            }
         }
 
         function generatePassphrase() {
             const words = ['apple','mountain','river','freedom','shadow','lightning','ocean','star','quantum','echo','brave','silent','thunder','crystal','phoenix'];
             let phrase = '';
-            for (let i = 0; i < 4; i++) phrase += words[Math.floor(Math.random()*words.length)] + (i < 3 ? '-' : '');
+            for (let i = 0; i < 4; i++) {
+                phrase += words[Math.floor(Math.random()*words.length)] + (i < 3 ? '-' : '');
+            }
             document.getElementById('passphrase').innerText = phrase;
         }
 
