@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free strong random password generator. Create secure passwords instantly.">
+    <meta name="google-site-verification" content="SprdVTQRI7fqLNEyHNwhYkUjLNoBAZKWjQ51gJBU9F8" />
     <title>SecurePassGen - Free Strong Random Password Generator</title>
     <style>
         body {
@@ -30,10 +31,7 @@
         }
         h1 {
             margin: 0;
-            font-size: 2.7rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            font-size: 2.6rem;
         }
         .toggle {
             font-size: 34px;
@@ -65,22 +63,38 @@
         .generate { background: #ff6b00; color: white; }
         .copy { background: #28a745; color: white; }
         .passphrase { background: #6f42c1; color: white; }
+        
+        /* AdSense space */
+        .adsense-placeholder {
+            background: #222;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- AdSense space (top) -->
+        <div class="adsense-placeholder">
+            <!-- Google AdSense code will go here later -->
+        </div>
+
         <div class="header">
             <h1>🔐 SecurePassGen</h1>
             <button class="toggle" onclick="toggleMode()">🌙</button>
         </div>
-        <p style="text-align:center; color:#aaa;">Free • Secure • Private • Works Offline</p>
+        <p style="text-align:center; color:#aaa; margin-bottom:25px;">Free • Secure • Private • Works Offline</p>
         
         <div class="password" id="password">Click Generate</div>
 
         <button class="generate" onclick="generatePassword()">Generate Strong Password</button>
         <button class="copy" onclick="copyPassword()">Copy to Clipboard</button>
 
-        <p><strong>Length:</strong> <input type="range" id="length" min="8" max="32" value="16" oninput="generatePassword()" style="width:100%"> <output id="lengthValue">16</output></p>
+        <p><strong>Length:</strong> <input type="range" id="length" min="8" max="32" value="16" oninput="generatePassword()" style="width:100%"> <span id="len">16</span></p>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0;">
             <label><input type="checkbox" id="upper" checked onchange="generatePassword()"> Uppercase</label>
@@ -96,6 +110,15 @@
         <details><summary>Are these passwords really secure?</summary><p>Yes — long + truly random = extremely hard to crack.</p></details>
         <details><summary>Is this tool free forever?</summary><p>Yes, 100% free with no ads.</p></details>
         <details><summary>Do you store any passwords?</summary><p>No. Everything is generated in your browser only.</p></details>
+
+        <h2 style="margin-top:40px;">Privacy Policy</h2>
+        <details>
+            <summary>Read Full Privacy Policy</summary>
+            <p>• We do not collect or store any personal data<br>
+               • All passwords are generated locally in your browser<br>
+               • Nothing is sent to any server<br>
+               • We respect your privacy 100%</p>
+        </details>
     </div>
 
     <script>
@@ -107,32 +130,25 @@
 
         function generatePassword() {
             const len = parseInt(document.getElementById('length').value);
-            document.getElementById('lengthValue').textContent = len;
+            document.getElementById('len').textContent = len;
 
-            let chars = '';
-            if (document.getElementById('lower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
-            if (document.getElementById('upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (document.getElementById('numbers').checked) chars += '0123456789';
-            if (document.getElementById('symbols').checked) chars += '!@#$%^&*';
-
+            let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
             let pass = '';
             for (let i = 0; i < len; i++) {
                 pass += chars[Math.floor(Math.random() * chars.length)];
             }
-            document.getElementById('password').innerText = pass || 'Click Generate';
+            document.getElementById('password').innerText = pass;
         }
 
         function copyPassword() {
             const pass = document.getElementById('password').innerText;
-            if (pass && pass !== 'Click Generate') {
-                navigator.clipboard.writeText(pass).then(() => {
-                    alert('✅ Copied to clipboard!');
-                });
+            if (pass !== 'Click Generate') {
+                navigator.clipboard.writeText(pass).then(() => alert('✅ Copied!'));
             }
         }
 
         function generatePassphrase() {
-            const words = ['apple','mountain','river','freedom','shadow','lightning','ocean','star','quantum','echo','brave','silent'];
+            const words = ['apple','mountain','river','freedom','shadow','lightning','ocean','star','quantum','echo'];
             let phrase = '';
             for (let i = 0; i < 4; i++) {
                 phrase += words[Math.floor(Math.random()*words.length)];
@@ -141,7 +157,6 @@
             document.getElementById('passphrase').innerText = phrase;
         }
 
-        // Generate initial password
         window.onload = generatePassword;
     </script>
 </body>
